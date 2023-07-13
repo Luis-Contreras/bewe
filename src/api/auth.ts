@@ -1,4 +1,3 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AUTH_API, REQUEST_TYPE } from "./constants";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { loginTypes, signUpTypes } from "../types";
