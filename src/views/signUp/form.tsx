@@ -13,7 +13,7 @@ export const Form = ({
   onSubmit,
   register,
   errors,
-  isLoading
+  isLoading,
 }: any) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

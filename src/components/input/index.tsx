@@ -14,6 +14,7 @@ export const Input: FC<inputTypes> = ({
   id,
   validate,
   disabled = false,
+  defaultValue,
 }) => {
   return (
     <Box>
@@ -24,6 +25,7 @@ export const Input: FC<inputTypes> = ({
       )}
       <MUIInput
         required
+        defaultValue={defaultValue}
         disabled={disabled}
         id={id}
         {...register(id, { required, validate: validate })}

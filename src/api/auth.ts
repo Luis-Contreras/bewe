@@ -5,45 +5,21 @@ import { loginTypes, signUpTypes } from "../types";
 
 export const fetchSignUp = createAsyncThunk(
   "signUpUser",
-  async (body: signUpTypes | any, thunkAPI) => {
-    return {
-      message: "success",
-      data: {
-        name: "string",
-        email: "test@gmail.com",
-        password: "b45cffe084dd3d20d928bee85e7b0f21",
-        image: "string",
-      },
-    };
-  }
-  // await fetch(`${AUTH_API}/singin`, {
-  //   body: body,
-  // })
-  //   .then((response) => response.json())
-  //   .then((data) => data)
+  async (body, thunkAPI) =>
+    await fetch(`${AUTH_API}/singin`, {
+      body: JSON.stringify(body),
+      headers: {},
+      method: REQUEST_TYPE.POST,
+    }).then((response) => response.json())
 );
 
 export const fetchLogin = createAsyncThunk(
   "loginUser",
-  async (body: loginTypes | any, thunkAPI) => {
-    return {
-      message: "success",
-      data: {
-        id: 56,
-        name: "string",
-        email: "string",
-        password: "b45cffe084dd3d20d928bee85e7b0f21",
-        image: "string",
-      },
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0cmluZyIsIm5hbWUiOiJzdHJpbmciLCJpZCI6NTYsImlhdCI6MTY4OTE4NTI4Nn0.jEpGycTpb-HRbR4bpTC9l25Gz37nNxjlJBehqxnzVy8",
-    };
-  }
-  // await fetch(`${AUTH_API}/login`, {
-  //   body: body,
-  // })
-  //   .then((response) => response.json())
-  //   .then((data) => data)
+  async (body: loginTypes | any, thunkAPI) =>
+    await fetch(`${AUTH_API}/login`, {
+      body: JSON.stringify(body),
+      method: REQUEST_TYPE.POST,
+    }).then((response) => response.json())
 );
 
 interface UsersState {
@@ -53,6 +29,7 @@ interface UsersState {
   error: boolean;
   registerUser: boolean;
   token: string;
+  message: string;
 }
 
 const initialState = {
@@ -61,7 +38,8 @@ const initialState = {
   loading: false,
   error: false,
   registerUser: false,
-  token: ''
+  token: "",
+  message: "",
 } as UsersState;
 
 const signUpUserSlice = createSlice({
@@ -77,9 +55,14 @@ const signUpUserSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchSignUp.fulfilled, (state, action) => {
+      if (action.payload.error) {
+        state.error = true;
+        state.message = action.payload.error;
+        state.loading = false;
+        return;
+      }
       state.registerUserData = action.payload.data;
       state.registerUser = true;
-      state.loading = false;
     });
     builder.addCase(fetchLogin.rejected, (state, action) => {
       state.error = true;
@@ -89,10 +72,15 @@ const signUpUserSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchLogin.fulfilled, (state, action) => {
-      state.loginUserData = action.payload.data;
-      localStorage.setItem('token', action.payload.token)
-      localStorage.setItem('userData', JSON.stringify(action.payload.data))
-      state.token = action.payload.token;
+      if (action.payload.message === "User not exist") {
+        state.error = true;
+        state.message = action.payload.message;
+      } else {
+        state.loginUserData = action.payload.data;
+        localStorage.setItem("token", action.payload.token);
+        localStorage.setItem("userData", JSON.stringify(action.payload.data));
+        state.token = action.payload.token;
+      }
       state.loading = false;
     });
   },

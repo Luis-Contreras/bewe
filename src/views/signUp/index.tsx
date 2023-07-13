@@ -20,36 +20,39 @@ export const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
 
-  const [showMessage, setShowMessage] = useState('')
+  const [showMessage, setShowMessage] = useState("");
 
-  const {loading, error, registerUserData} = useSelector((state: any) => state.auth);
-
+  const { loading, error, registerUserData, message } = useSelector(
+    (state: any) => state.auth
+  );
 
   useEffect(() => {
-    if(!loading && Object.keys(registerUserData).length === 0) return
+    if (error && message) return setShowMessage(message);
 
-    if(error) return setShowMessage('Error register user')
+    if (Object.keys(registerUserData).length === 0) return;
 
-    if(registerUserData?.name && registerUserData?.email){
-      navigate('/')
+    if (registerUserData?.name && registerUserData?.email) {
+      navigate("/");
     }
-
-  }, [registerUserData, loading, error])
+  }, [registerUserData, loading, error]);
 
   const onSubmit: SubmitHandler<signUpTypes> = async (data) => {
-    await dispatch(fetchSignUp(data))
+    await dispatch(fetchSignUp());
   };
 
   return (
     <>
-     <Toast
-        open={showMessage.length ? true : false}
-        messages={showMessage}
-      />
+      <Toast open={showMessage.length ? true : false} messages={showMessage} />
       {loading && <Loading />}
       <Layout>
-        <Header isLoading={loading}/>
-        <Form handleSubmit={handleSubmit} onSubmit={onSubmit} register={register} isLoading={loading} errors={errors}/>
+        <Header isLoading={loading} />
+        <Form
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+          register={register}
+          isLoading={loading}
+          errors={errors}
+        />
         <Footer />
       </Layout>
     </>

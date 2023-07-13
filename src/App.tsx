@@ -4,10 +4,10 @@ import { theme } from "./theme";
 import { Login } from "./views/login/";
 import { Route, Routes } from "react-router-dom";
 import { SignUp } from "./views/signUp/";
-import { Home } from "./views/home/home";
+import { Home } from "./views/home/";
 import { Profile } from "./views/profile";
-import { Provider } from 'react-redux'
-import store from './redux'
+import { Provider } from "react-redux";
+import store from "./redux";
 
 function App() {
   return (

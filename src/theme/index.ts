@@ -1,7 +1,7 @@
-import { createTheme  } from '@mui/material';
+import { createTheme } from "@mui/material";
 
-export const theme = createTheme ({
-    typography: {
-     "fontFamily": `"Montserrat", "DM Sans", sans-serif`,
-    }
- });
+export const theme = createTheme({
+  typography: {
+    fontFamily: ["Montserrat", "sans-serif"].join(","),
+  },
+});

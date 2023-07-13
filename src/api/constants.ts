@@ -4,6 +4,6 @@ export const LINKS_API = `${baseUrl}/links`;
 export const AUTH_API = `${baseUrl}/auth`;
 export const REQUEST_TYPE = {
   POST: "POST",
-  GET: 'GET',
-  DELETE: 'DELETE'
+  GET: "GET",
+  DELETE: "DELETE",
 };
